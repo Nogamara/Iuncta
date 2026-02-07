@@ -6,7 +6,7 @@ local function overrideDisplayPower(element, unit)
 	local self = element:GetParent()
 
 	local role = UnitGroupRolesAssigned(unit)
-	if role == 'HEALER' then
+	if role == 'HEALER' or true then
 		if UnitPowerType(unit) == Enum.PowerType.Mana then
 			self:EnableElement('Power')
 			self.Health:SetHeight(self:GetHeight() - element:GetHeight() - 1)
@@ -64,6 +64,9 @@ end
 
 local function style(self, unit)
 	Mixin(self, addon.widgetMixin)
+	local ufw = 284
+	local ufh = 30
+	local barTex = "Interface\\AddOns\\Inomena2\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.Tooltip)
 	self:SetScript('OnLeave', GameTooltip_Hide)
@@ -77,7 +80,8 @@ local function style(self, unit)
 	local Health = self:CreateStatusBar()
 	Health:SetPoint('TOPLEFT')
 	Health:SetPoint('TOPRIGHT')
-	Health:SetHeight(self:GetHeight())
+	Health:SetHeight(ufh)
+	Health:SetStatusBarTexture(barTex)
 	Health.colorClass = true
 	Health.colorDisconnected = true
 	Health.colorReaction = true -- for vehicles
@@ -122,9 +126,10 @@ local function style(self, unit)
 	Health.OverHealAbsorbIndicator = OverHealAbsorbIndicator
 
 	local Power = self:CreateBackdropStatusBar()
-	Power:SetPoint('BOTTOMLEFT')
-	Power:SetPoint('BOTTOMRIGHT')
-	Power:SetHeight(5)
+	Power:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -ufh)
+	Power:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 0, -ufh)
+	Power:SetHeight(ufh)
+	Power:SetStatusBarTexture(barTex)
 	Power.colorPower = true
 	Power.GetDisplayPower = overrideDisplayPower
 	Power.displayAltPower = true -- needed for display override to work
@@ -145,8 +150,13 @@ local function style(self, unit)
 	Name:SetPoint('LEFT')
 	Name:SetJustifyH('LEFT')
 	self.Name = Name
-	self:Tag(Name, '[inomena:leader][inomena:reactioncolor][inomena:name<$|r]')
+	self:Tag(Name, '[$>inomena:leader<$ ][inomena:reactioncolor][inomena:name<$|r][inomena:role]')
 
+	local PowerVal = Power:CreateText()
+	PowerVal:SetPoint('BOTTOMRIGHT', Power, 'RIGHT', 0, -8)
+	PowerVal:SetJustifyH('LEFT')
+	self:Tag(PowerVal, '[$>inomena:power<$ / ][inomena:powermax]')
+	
 	local Status = Health:CreateText()
 	Status:SetPoint('CENTER', Health, 'TOP', 0, -addon.SPACING)
 	Status:SetJustifyH('CENTER')
@@ -319,10 +329,10 @@ oUF:Factory(function(self)
 		showPlayer = true,
 		maxColumns = 1,
 		['oUF-initialConfigFunction'] = [[
-			self:SetWidth(144)
-			self:SetHeight(52)
+			self:SetWidth(284)
+			self:SetHeight(60)
 		]]
-	}), 'RIGHT', UIParent, 'CENTER', -360, 0)
+	}), 'RIGHT', UIParent, 'CENTER', -650, 0)
 
 	-- healer-specific raid
 	SpawnHeader(raidStyle, 'HEALER', addon:T({

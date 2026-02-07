@@ -4,11 +4,14 @@ local oUF = addon.oUF
 local styleName = addon.unitPrefix .. 'Target'
 oUF:RegisterStyle(styleName, function(self, unit)
 	Mixin(self, addon.widgetMixin)
+	local ufw = 284
+	local ufh = 30
+	local barTex = "Interface\\AddOns\\Inomena2\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.Tooltip)
 	self:SetScript('OnLeave', GameTooltip_Hide)
 	self:RegisterForClicks('AnyUp')
-	self:SetSize(320, 30)
+	self:SetSize(ufw, ufh)
 
 	addon.unitShared.AddShiftClick(self, unit)
 	addon.unitShared.AddMiddleClick(self)
@@ -17,6 +20,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	Health:SetAllPoints()
 	Health.colorReaction = true -- we only set these so oUF registers events
 	Health.colorSelection = true
+	Health:SetStatusBarTexture(barTex)
 	Health.UpdateColor = addon.unitShared.UpdateColorHealth
 	self.Health = Health
 
@@ -32,15 +36,16 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	local HealthValue = Health:CreateText()
 	HealthValue:SetPoint('RIGHT', -addon.SPACING, 0)
 	HealthValue:SetJustifyH('RIGHT')
-	self:Tag(HealthValue, '[inomena:hpcur][ $>inomena:hptarget]')
+	self:Tag(HealthValue, '[inomena:hpcur]/[inomena:hpmax] | [inomena:hpper]%')
 
 	-- need to render texts higher than all the healpred stuff
 	HealthValue:GetParent():SetFrameLevel(Health:GetFrameLevel() + 5)
 
 	local Power = self:CreateBackdropStatusBar()
-	Power:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -addon.SPACING)
-	Power:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -addon.SPACING)
-	Power:SetHeight(5)
+	Power:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
+	Power:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -2)
+	Power:SetHeight(ufh)
+	Power:SetStatusBarTexture(barTex)
 	Power.colorPower = true
 	self.Power = Power
 
@@ -57,7 +62,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 
 	local Buffs = self:CreateFrame()
 	Buffs:SetPoint('BOTTOMRIGHT', self, 'TOPRIGHT', 0, addon.SPACING)
-	Buffs:SetSize(self:GetWidth() * 1/3, self:GetHeight() * 2)
+	Buffs:SetSize(self:GetWidth() * 1, self:GetHeight() * 2)
 	Buffs.growthX = 'LEFT'
 	Buffs.growthY = 'UP'
 	Buffs.initialAnchor = 'BOTTOMRIGHT'
@@ -113,12 +118,24 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	local CastbarIcon = CastbarIconFrame:CreateIcon()
 	CastbarIcon:SetAllPoints()
 	Castbar.Icon = CastbarIcon
+	
+	--local f = CreateFrame("Frame", "nxTargetFrame", UIParent)
+	----local f = self:CreateFrame()
+	--f.bg = f:CreateTexture(nil, "BACKGROUND")
+	--f.bg:SetColorTexture(0, 0, 0, 0.3)
+	--f.bg:SetAllPoints(f)
+	--f:SetSize(ufw-40, (ufh*2)+2)
+	--f:SetPoint('TOPLEFT', self, -4, 4)
+	--f:SetFrameStrata('LOW')
+	--f:SetFrameLevel(1)
+	----f.CreateButton = addon.unitShared.CreateAura
+	----f.PostUpdateButton = addon.unitShared.PostUpdateAura
 end)
 
 oUF:SetActiveStyle(styleName)
 
 local target = oUF:Spawn('target')
-target:SetPoint('CENTER', 420, -260)
+target:SetPoint('CENTER', 380, -200)
 addon:PixelPerfect(target)
 
 -- expose internally
