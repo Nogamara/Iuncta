@@ -20,14 +20,17 @@ end
 local styleName = addon.unitPrefix .. 'Player'
 oUF:RegisterStyle(styleName, function(self, unit)
 	Mixin(self, addon.widgetMixin)
+	local ufw = 284
+	local ufh = 30
+	local barTex = "Interface\\AddOns\\Inomena2\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.ShowTooltip)
 	self:SetScript('OnLeave', addon.unitShared.HideTooltip)
-	self:RegisterForClicks('AnyUp')
-	self:SetSize(320, 30)
+	self:RegisterForClicks('LeftButtonUp')
+	self:SetSize(ufw, ufh)
 
-	addon.unitShared.AddShiftClick(self, unit)
-	addon.unitShared.AddMiddleClick(self)
+	--addon.unitShared.AddShiftClick(self, unit)
+	--addon.unitShared.AddMiddleClick(self)
 
 	local HealthTempLoss = self:CreateBackdropStatusBar()
 	HealthTempLoss:SetAllPoints()
@@ -42,6 +45,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	Health.colorReaction = true
 	Health.incomingHealOverflow = 1
 	Health.TempLoss = HealthTempLoss
+	Health:SetStatusBarTexture(barTex)
 	self.Health = Health
 
 	self.HealthPrediction = {}
@@ -76,7 +80,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	local HealthValue = self:CreateText()
 	HealthValue:SetPoint('RIGHT', -addon.SPACING, 0)
 	HealthValue:SetJustifyH('RIGHT')
-	self:Tag(HealthValue, '[|cff43ebe7+$>inomena:absorb<$|r ][|cffff8080-$>inomena:hpdef<$|r ][inomena:hpcur][ $>inomena:hpper<$|cff0090ff%|r]')
+	self:Tag(HealthValue, '[|cff43ebe7+$>inomena:absorb<$|r ] [$>inomena:hpcur<$ / ][$>inomena:hpmax<$ \124 ][$>inomena:hpper<$|cff0090ff%|r]')
 
 	-- need to render texts higher than all the healpred stuff
 	HealthValue:GetParent():SetFrameLevel(Health:GetFrameLevel() + 5)
@@ -86,16 +90,23 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	Status:SetJustifyH('LEFT')
 	self:Tag(Status, '[|cffffff00$>group<$|r ][inomena:dead][inomena:resting][inomena:resurrect]')
 
-	if MANA_CLASSES[addon.PLAYER_CLASS] then
+	if MANA_CLASSES[addon.PLAYER_CLASS] or true then
 		local Power = self:CreateBackdropStatusBar()
-		Power:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -addon.SPACING)
-		Power:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -addon.SPACING)
-		Power:SetHeight(5)
+		Power:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
+		Power:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -2)
+		Power:SetHeight(ufh)
+		Power:SetStatusBarTexture(barTex)
 		Power.colorPower = true
 		Power.displayAltPower = true -- needed for display override to work
-		Power.GetDisplayPower = overrideDisplayPower
+		--Power.GetDisplayPower = overrideDisplayPower
 		self.Power = Power
-
+		if true then
+		local PowerValue = Power:CreateText()
+		PowerValue:SetPoint('RIGHT', -addon.SPACING, 0)
+		PowerValue:SetJustifyH('RIGHT')
+		self:Tag(PowerValue, '[$>inomena:power<$ / ][inomena:powermax]')
+		PowerValue:GetParent():SetFrameLevel(Power:GetFrameLevel() + 5)
+		else
 		local PowerPrediction = Power:CreateStatusBar()
 		PowerPrediction:SetReverseFill(true)
 		PowerPrediction:SetPoint('TOP')
@@ -103,6 +114,8 @@ oUF:RegisterStyle(styleName, function(self, unit)
 		PowerPrediction:SetPoint('RIGHT', Power:GetStatusBarTexture())
 		PowerPrediction:SetStatusBarColor(0, 0, 0, 0.4) -- render as a shade
 		Power.CostPrediction = PowerPrediction
+		end
+
 	end
 
 	local Debuffs = self:CreateFrame()
@@ -133,12 +146,21 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	RaidIcon:SetPoint('CENTER', self, 'TOP')
 	RaidIcon:SetSize(24, 24)
 	self.RaidTargetIndicator = RaidIcon
+	
+	--local f = CreateFrame("Frame", "nxPlayerFrame", UIParent)
+	--f.bg = f:CreateTexture(nil, "BACKGROUND")
+	--f.bg:SetColorTexture(0, 0, 0, 0.3)
+	--f.bg:SetAllPoints(f)
+	--f:SetSize(ufw-40, (ufh*2)+2)
+	--f:SetPoint('TOPLEFT', self, -4, 4)
+	--f:SetFrameStrata('LOW')
+	--f:SetFrameLevel(1)
 end)
 
 oUF:SetActiveStyle(styleName)
 
 local player = oUF:Spawn('player')
-player:SetPoint('CENTER', -420, -260)
+player:SetPoint('CENTER', -380, -200)
 addon:PixelPerfect(player)
 
 -- expose internally

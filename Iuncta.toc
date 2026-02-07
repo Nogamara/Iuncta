@@ -1,0 +1,69 @@
+## Interface: 120000, 120001
+## Author: p3lim, Nogamara
+## Title: Iuncta
+## Notes: Collection of bits and bobs that make up my UI
+## X-oUF: oUF_Iuncta
+
+# files are loaded in order of importance and likelihood of breaking
+
+oUF\oUF.xml
+Dashi\embed.xml
+##..\oUF\oUF.xml
+##..\Dashi\embed.xml
+
+templates.xml
+
+core\enums.lua
+core\constants.lua
+core\curves.lua
+core\colors.lua
+core\assets2.lua
+core\widgets.lua
+core\backdrop.lua
+core\util.lua
+core\bind.lua
+
+modules\units\elements\core.lua
+modules\units\elements\colors.lua
+modules\units\elements\auras.lua
+modules\units\elements\castbar.lua
+modules\units\elements\health.lua
+modules\units\elements\tags.lua
+modules\units\elements\tags2.lua
+modules\units\elements\threat.lua
+
+modules\units\player.lua
+modules\units\target.lua
+modules\units\pet.lua
+modules\units\focus.lua
+modules\units\targettarget.lua
+modules\units\group.lua
+modules\units\boss.lua
+# modules\units\nameplates.lua
+# modules\units\resources.lua
+# modules\units\castbar.lua
+
+# bind F12 to /reload
+modules\settings\bindings\reload.lua
+
+# standalone coordinates on worldmap
+modules\widgets\coordinates.lua
+# hero talent switcher
+modules\widgets\herotalents.lua
+# skyriding display
+modules\widgets\skyriding.lua
+# quick spec switcher
+modules\widgets\talents.lua
+
+# add movement speed back to the CharacterFrame
+modules\blizzard\character.lua
+# right-click to hide slots
+modules\blizzard\dressingroom.lua
+# hide bagbar etc
+modules\blizzard\hide2.lua
+# auto-subject / recipient
+modules\blizzard\mail2.lua
+# toasts and popups
+modules\blizzard\popups2.lua
+
+# modules\iuncta\settings.lua
