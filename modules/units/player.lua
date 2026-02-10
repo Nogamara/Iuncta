@@ -22,7 +22,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	Mixin(self, addon.widgetMixin)
 	local ufw = 284
 	local ufh = 30
-	local barTex = "Interface\\AddOns\\Inomena2\\assets\\bars\\Minimalist.tga"
+	local barTex = "Interface\\AddOns\\Iuncta\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.ShowTooltip)
 	self:SetScript('OnLeave', addon.unitShared.HideTooltip)
@@ -91,7 +91,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	self:Tag(Status, '[|cffffff00$>group<$|r ][inomena:dead][inomena:resting][inomena:resurrect]')
 
 	if MANA_CLASSES[addon.PLAYER_CLASS] or true then
-		local Power = self:CreateBackdropStatusBar()
+		local Power = self:CreateBackdropStatusBarForPower('player')
 		Power:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -2)
 		Power:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, -2)
 		Power:SetHeight(ufh)

@@ -5,6 +5,7 @@ local function overrideDisplayPower(element, unit)
 	-- only show power for healers' mana or blood death knights' runic power
 	local self = element:GetParent()
 
+    --[[
 	local role = UnitGroupRolesAssigned(unit)
 	if role == 'HEALER' or true then
 		self.Health.TempLoss:SetHeight(self:GetHeight() - element:GetHeight() - 1)
@@ -24,6 +25,10 @@ local function overrideDisplayPower(element, unit)
 
 	self.Health.TempLoss:SetHeight(self:GetHeight())
 	element:SetHeight(0)
+	]]--
+
+	self:EnableElement('Power')
+	self.Health:SetHeight(self:GetHeight() - element:GetHeight() - 1)
 end
 
 local function wrapForceUpdatePower(self)
@@ -150,14 +155,14 @@ local function style(self, unit)
 	OverHealAbsorbIndicator:SetWidth(10)
 	Health.OverHealAbsorbIndicator = OverHealAbsorbIndicator
 
-	local Power = self:CreateBackdropStatusBar()
+	local Power = self:CreateBackdropStatusBarForPower(unit) -- self:CreateBackdropStatusBar()
 	Power:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -ufh)
 	Power:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 0, -ufh)
 	Power:SetHeight(ufh)
 	Power:SetStatusBarTexture(barTex)
 	Power.colorPower = true
-	Power.GetDisplayPower = overrideDisplayPower
-	Power.displayAltPower = true -- needed for display override to work
+	--Power.GetDisplayPower = overrideDisplayPower
+	-- Power.displayAltPower = true -- needed for display override to work
 	self.Power = Power
 
 	-- update power whenever a player's role changes
@@ -176,7 +181,14 @@ local function style(self, unit)
 	Name:SetPoint('LEFT')
 	Name:SetJustifyH('LEFT')
 	self.Name = Name
-	self:Tag(Name, '[$>inomena:leader<$ ][inomena:reactioncolor][inomena:name<$|r][inomena:role]')
+	self:Tag(Name, '[$>inomena:leader<$ ][inomena:reactioncolor][inomena:name<$|r]')
+
+	local Role = Health:CreateText(14)
+	Role:SetPoint('LEFT', Health, 'LEFT', -12, 12)
+	Role:SetJustifyH('RIGHT')
+	Role:SetIgnoreParentAlpha(true)
+	self.Role = Role
+	self:Tag(Role, '[inomena:role]')
 
 	local PowerVal = Power:CreateText()
 	PowerVal:SetPoint('BOTTOMRIGHT', Power, 'RIGHT', 0, -8)
@@ -201,14 +213,14 @@ local function style(self, unit)
 	self.ReadyCheckIndicator = ReadyCheck
 
 	local Buffs = self:CreateFrame()
-	Buffs:SetPoint('TOPLEFT', 3, -3)
+	Buffs:SetPoint('BOTTOMLEFT', 4, 7)
 	Buffs:SetSize(self:GetWidth() - 3, 18)
 	Buffs:SetFrameLevel(Name:GetParent():GetFrameLevel() + 1) -- render high
 	Buffs.growthX = 'RIGHT'
 	Buffs.growthY = 'DOWN'
 	Buffs.size = 16
 	Buffs.spacing = addon.SPACING
-	Buffs.initialAnchor = 'TOPLEFT'
+	Buffs.initialAnchor = 'BOTTOMLEFT'
 	Buffs.disableCooldownText = true -- custom option
 	Buffs.filter = 'HELPFUL|PLAYER' -- we filter it further in FilterAura override
 	Buffs.CreateButton = addon.unitShared.CreateAura
