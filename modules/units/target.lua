@@ -49,6 +49,12 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	Power.colorPower = true
 	self.Power = Power
 
+    local PowerValueX = Power:CreateText()
+    PowerValueX:SetPoint('LEFT', addon.SPACING, 0)
+    PowerValueX:SetJustifyH('LEFT')
+    self:Tag(PowerValueX, '[inomena:level]')
+    PowerValueX:GetParent():SetFrameLevel(Power:GetFrameLevel() + 5)
+
 	local Name = Health:CreateText()
 	Name:SetPoint('LEFT', addon.SPACING, 0)
 	Name:SetPoint('RIGHT', HealthValue, 'LEFT', -addon.SPACING, 0)

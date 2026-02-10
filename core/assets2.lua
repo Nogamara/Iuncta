@@ -7,4 +7,4 @@ addon.GLOW = { -- backdrop
 }
 
 -- modified version of AvantGarde to include cyrillic characters, by muleyo @ wowui discord
-addon.FONT = addon.PATH .. 'FRIZQT__.ttf'
+addon.FONT = "Fonts\\" .. 'FRIZQT__.ttf'

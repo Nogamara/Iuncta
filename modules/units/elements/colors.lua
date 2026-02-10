@@ -13,11 +13,67 @@ for powerType, color in next, addon.colors.power do
 	end
 end
 
+
+function getOverrideDisplayPower(unit)
+    local cls = UnitClassBase(unit)
+    local specs = addon.enums.ClassSpecializations[cls]
+	-- basically never show mana
+	if UnitHasVehicleUI(unit) then
+		return (UnitPowerType('vehicle'))
+	else
+		local spec = C_SpecializationInfo.GetSpecialization()
+		if cls == 'DEATHKNIGHT' then
+			return Enum.PowerType.RunicPower
+		elseif cls == 'DEMONHUNTER' then
+			return Enum.PowerType.Fury
+		elseif cls == 'DRUID' then
+			local form = GetShapeshiftFormID()
+			if form == addon.enums.DruidForms.Cat then
+				return Enum.PowerType.Energy
+			elseif form == addon.enums.DruidForms.Bear then
+				return Enum.PowerType.Rage
+			else
+                if unit == 'player' and spec == specs.Balance then
+                    return Enum.PowerType.LunarPower
+                else
+                    return Enum.PowerType.Mana
+                end
+			end
+		elseif cls == 'HUNTER' then
+			return Enum.PowerType.Focus
+		elseif cls == 'MAGE' then
+            if unit == 'player' and spec == specs.Arcane then
+			    return Enum.PowerType.Mana -- it's a rotational important resource for this spec
+			else
+                return Enum.PowerType.Mana
+            end
+		elseif cls == 'MONK' and spec ~= specs.Mistweaver then
+			return Enum.PowerType.Energy
+		elseif cls == 'PRIEST' then
+            if unit =='player' and spec == specs.Shadow then
+			    return Enum.PowerType.Insanity
+			else
+                return Enum.PowerType.Mana
+            end
+		elseif cls == 'ROGUE' then
+			return Enum.PowerType.Energy
+		elseif cls == 'SHAMAN' then
+            if unit == 'player' and spec == specs.Elemental then
+			    return Enum.PowerType.Maelstrom
+			else
+                return Enum.PowerType.Mana
+            end
+		elseif cls == 'WARRIOR' then
+			return Enum.PowerType.Rage
+		end
+	end
+end
+
 -- darken class colors because the status bar texture we use makes it too bright,
 -- we'll instead use addon.colors.class or direct from APIs for fontstrings
 for _, color in next, oUF.colors.class do
 	local h, s, v = C_ColorUtil.ConvertRGBToHSV(color:GetRGB())
-	color:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.6))
+	-- iuncta color:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.6))
 end
 
 -- also darken reaction colors, using addon.colors.reaction instead for fontstrings
