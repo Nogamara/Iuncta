@@ -1,5 +1,5 @@
 ## Interface: 120000, 120001
-## Author: p3lim, Nogamara
+## Author: Nogamara
 ## Title: Iuncta
 ## Notes: Collection of bits and bobs that make up my UI
 ## X-oUF: oUF_Iuncta
@@ -8,8 +8,6 @@
 
 oUF\oUF.xml
 Dashi\embed.xml
-##..\oUF\oUF.xml
-##..\Dashi\embed.xml
 
 core\enums.lua
 core\constants.lua
@@ -65,6 +63,6 @@ modules\blizzard\hide2.lua
 modules\blizzard\mail2.lua
 # toasts and popups
 modules\blizzard\popups2.lua
-###modules\blizzard\tooltips2.lua
+# modules\blizzard\tooltips2.lua
 
 # modules\iuncta\settings.lua
