@@ -11,8 +11,6 @@ Dashi\embed.xml
 ##..\oUF\oUF.xml
 ##..\Dashi\embed.xml
 
-templates.xml
-
 core\enums.lua
 core\constants.lua
 core\curves.lua
@@ -45,6 +43,8 @@ modules\units\boss.lua
 
 # bind F12 to /reload
 modules\settings\bindings\reload.lua
+# set some cvars
+modules\settings\cvars2.lua
 
 # standalone coordinates on worldmap
 modules\widgets\coordinates.lua
@@ -65,5 +65,6 @@ modules\blizzard\hide2.lua
 modules\blizzard\mail2.lua
 # toasts and popups
 modules\blizzard\popups2.lua
+###modules\blizzard\tooltips2.lua
 
 # modules\iuncta\settings.lua

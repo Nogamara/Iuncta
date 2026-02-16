@@ -64,15 +64,18 @@ do
         local statusBar = self:CreateStatusBar(template)
         statusBar:AddBackdrop()
 
-        local xx = getOverrideDisplayPower(unit)
-        local aa, ab, ac, ad = addon.colors.power[xx]
-        local cls = UnitClassBase(unit)
-        local col = C_ClassColor.GetClassColor(cls)
-        local h, s, v = C_ColorUtil.ConvertRGBToHSV(col:GetRGB())
-        col:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.4))
-        local r, g, b = col:GetRGB()
+        local classToken = UnitClassBase(unit)
+        print(tostring(classToken) .. " xyz")
+        if classToken then
+            local col = C_ClassColor.GetClassColor(classToken)
+            local h, s, v = C_ColorUtil.ConvertRGBToHSV(col:GetRGB())
+            col:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.4))
+            local r, g, b = col:GetRGB()
+            statusBar:SetBackgroundColor(r, g, b, 0.7)
+        else
+            statusBar:SetBackgroundColor(0, 0, 0, 0.7)
+        end
 
-        statusBar:SetBackgroundColor(r, g, b, 0.7)
         return statusBar
    	end
 end
