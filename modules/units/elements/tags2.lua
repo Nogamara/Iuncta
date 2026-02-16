@@ -16,6 +16,15 @@ tags.Methods['inomena:powermax'] = function(unit)
 	end
 end
 
+tags.Events['inomena:combat'] = 'PLAYER_REGEN_ENABLED PLAYER_REGEN_DISABLED'
+tags.Methods['inomena:combat'] = function(unit)
+	if addon.inCombat then
+		return '|A:pvptalents-warmode-swords:16:16|a' -- '|A:countdown-swords:16:16|a'
+	else
+		return ""
+	end
+end
+
 tags.Events['inomena:hpmax'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 tags.Methods['inomena:hpmax'] = function(unit)
 	if not UnitIsDeadOrGhost(unit) then

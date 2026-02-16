@@ -32,6 +32,9 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	--addon.unitShared.AddShiftClick(self, unit)
 	--addon.unitShared.AddMiddleClick(self)
 
+	self:RegisterEvent('PLAYER_REGEN_DISABLED', function () addon.inCombat = true end, true)
+	self:RegisterEvent('PLAYER_REGEN_ENABLED', function () addon.inCombat = false end, true)
+
 	local HealthTempLoss = self:CreateBackdropStatusBar()
 	HealthTempLoss:SetAllPoints()
 	HealthTempLoss:SetReverseFill(true)
@@ -88,7 +91,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	local Status = self:CreateText()
 	Status:SetPoint('LEFT', addon.SPACING, 0)
 	Status:SetJustifyH('LEFT')
-	self:Tag(Status, '[|cffffff00$>group<$|r ][inomena:dead][inomena:resting][inomena:resurrect]')
+	self:Tag(Status, '[|cffffff00$>group<$|r ][inomena:dead][inomena:resting][inomena:resurrect][$>inomena:combat<$]')
 
 	if MANA_CLASSES[addon.PLAYER_CLASS] or true then
 		local Power = self:CreateBackdropStatusBarForPower('player')
