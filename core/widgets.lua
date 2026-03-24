@@ -61,7 +61,6 @@ do
         statusBar:AddBackdrop()
 
         local classToken = UnitClassBase(unit)
-        print(tostring(classToken) .. " xyz")
         if classToken then
             local col = C_ClassColor.GetClassColor(classToken)
             local h, s, v = C_ColorUtil.ConvertRGBToHSV(col:GetRGB())

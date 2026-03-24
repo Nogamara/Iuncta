@@ -19,7 +19,7 @@ local CVARS = { -- exposed settings from the interface options
 
 	-- Gameplay Nameplates
 	UnitNameOwn = 0, -- (default)
-	UnitNameHostleNPC = 0, -- (sic!)
+	UnitNameHostleNPC = 1, -- (sic!)
 	ShowQuestUnitCircles = 0,
 	UnitNameNonCombatCreatureName = 0, -- (default)
 	UnitNameFriendlyPlayerName = 1, -- (default)
@@ -28,10 +28,12 @@ local CVARS = { -- exposed settings from the interface options
 	UnitNameFriendlyTotemName = 0,
 	UnitNameFriendlyMinionName = 0,
 	UnitNameEnemyPlayerName = 1, -- (default)
-	UnitNameEnemyPetName = 0,
+	UnitNameEnemyPetName = 1,
 	UnitNameEnemyGuardian = 0,
 	UnitNameEnemyTotem = 0,
 	UnitNameEnemyMinion = 0,
+
+	nameplateShowOnlyNameForFriendlyPlayerUnits = 1,
 
 	-- Accessibility General
 	enableMovePad = 0, -- (default)

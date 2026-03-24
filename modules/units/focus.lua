@@ -6,10 +6,19 @@ oUF:RegisterStyle(styleName, function(self)
 	Mixin(self, addon.widgetMixin)
 
 	self:RegisterForClicks('AnyUp')
-	self:SetSize(44, 22)
+	self:SetSize(150, 30)
+	local barTex = "Interface\\AddOns\\Iuncta\\assets\\bars\\Minimalist.tga"
+
+	local Health = self:CreateBackdropStatusBar()
+	Health:SetAllPoints()
+	Health.colorReaction = true -- we only set these so oUF registers events
+	Health.colorSelection = true
+	Health:SetStatusBarTexture(barTex)
+	Health.UpdateColor = addon.unitShared.UpdateColorHealth
+	self.Health = Health
 
 	local Name = self:CreateText()
-	Name:SetPoint('RIGHT')
+	Name:SetPoint('RIGHT', -addon.SPACING, 0)
 	Name:SetJustifyH('RIGHT')
 	self:Tag(Name, '[inomena:reactioncolor][inomena:name<$|r]')
 

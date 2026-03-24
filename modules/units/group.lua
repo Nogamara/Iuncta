@@ -90,7 +90,7 @@ local function style(self, unit)
 	Mixin(self, addon.widgetMixin)
 	local ufw = 284
 	local ufh = 30
-	local barTex = "Interface\\AddOns\\Inomena2\\assets\\bars\\Minimalist.tga"
+	local barTex = "Interface\\AddOns\\Iuncta\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.ShowTooltip)
 	self:SetScript('OnLeave', addon.unitShared.HideTooltip)
@@ -305,31 +305,6 @@ oUF:RegisterStyle(partyStyle, function(self, unit)
 	self.PrivateAuras.borderScale = 2.5
 end)
 
-local raidStyle = addon.unitPrefix .. 'Raid'
-oUF:RegisterStyle(raidStyle, function(self, unit)
-	style(self, unit)
-
-	-- debuffs inside the raid frame
-	self.Debuffs.filter = 'HARMFUL'
-	self.Debuffs.size = 16
-	self.Debuffs.num = 3
-	self.Debuffs.growthX = 'LEFT'
-	self.Debuffs.initialAnchor = 'BOTTOMRIGHT'
-	self.Debuffs.disableCooldownText = true -- custom option
-	self.Debuffs:SetPoint('BOTTOMRIGHT', -3, 3)
-	self.Debuffs:SetSize(self:GetWidth(), self.Debuffs.size)
-	self.Debuffs:SetFrameLevel(self.Name:GetParent():GetFrameLevel() + 1) -- render high
-
-	self.PrivateAuras:SetPoint('TOPRIGHT', -2, -4)
-	self.PrivateAuras:SetSize(self:GetWidth(), self.Debuffs:GetHeight())
-	self.PrivateAuras.spacing = 3
-	self.PrivateAuras.size = self.Debuffs.size + 3
-	self.PrivateAuras.growthX = self.Debuffs.growthX
-	self.PrivateAuras.initialAnchor = self.Debuffs.initialAnchor
-	self.PrivateAuras.disableCooldownText = self.Debuffs.disableCooldownText
-	self.PrivateAuras.borderScale = 1
-end)
-
 oUF:Factory(function(self)
 	local sharedAttributes = {
 		groupBy = 'ASSIGNEDROLE',
@@ -384,23 +359,23 @@ oUF:Factory(function(self)
 		]]
 	}), 'RIGHT', UIParent, 'CENTER', -650, 0)
 
-	-- healer-specific raid
-	SpawnHeader(raidStyle, 'HEALER', addon:T({
-		showRaid = true,
-		maxColumns = 8,
-		['oUF-initialConfigFunction'] = [[
-			self:SetWidth(92)
-			self:SetHeight(48)
-		]]
-	}), 'RIGHT', UIParent, 'CENTER', -300, 0)
-
-	-- dmg & tank use the same raid layout
-	SpawnHeader(raidStyle, '!HEALER', addon:T({
-		showRaid = true,
-		maxColumns = 8,
-		['oUF-initialConfigFunction'] = [[
-			self:SetWidth(80)
-			self:SetHeight(40)
-		]]
-	}), 'RIGHT', UIParent, 'CENTER', -500, -90)
+	---- healer-specific raid
+	--SpawnHeader(raidStyle, 'HEALER', addon:T({
+	--	showRaid = true,
+	--	maxColumns = 8,
+	--	['oUF-initialConfigFunction'] = [[
+	--		self:SetWidth(92)
+	--		self:SetHeight(48)
+	--	]]
+	--}), 'RIGHT', UIParent, 'CENTER', -300, 0)
+    --
+	---- dmg & tank use the same raid layout
+	--SpawnHeader(raidStyle, '!HEALER', addon:T({
+	--	showRaid = true,
+	--	maxColumns = 8,
+	--	['oUF-initialConfigFunction'] = [[
+	--		self:SetWidth(80)
+	--		self:SetHeight(40)
+	--	]]
+	--}), 'RIGHT', UIParent, 'CENTER', -500, -90)
 end)

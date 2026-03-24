@@ -33,7 +33,9 @@ modules\units\target.lua
 modules\units\pet.lua
 modules\units\focus.lua
 modules\units\targettarget.lua
+modules\units\pettarget.lua
 modules\units\group.lua
+# modules\units\raid.lua
 modules\units\boss.lua
 # modules\units\nameplates.lua
 # modules\units\resources.lua
