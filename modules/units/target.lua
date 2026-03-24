@@ -6,7 +6,7 @@ oUF:RegisterStyle(styleName, function(self, unit)
 	Mixin(self, addon.widgetMixin)
 	local ufw = 284
 	local ufh = 30
-	local barTex = "Interface\\AddOns\\Inomena2\\assets\\bars\\Minimalist.tga"
+	local barTex = "Interface\\AddOns\\Iuncta\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.Tooltip)
 	self:SetScript('OnLeave', GameTooltip_Hide)
