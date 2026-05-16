@@ -1,4 +1,4 @@
-## Interface: 120000, 120001
+## Interface: 120001, 120005
 ## Author: Nogamara
 ## Title: Iuncta
 ## Notes: Collection of bits and bobs that make up my UI
@@ -11,13 +11,18 @@ Dashi\embed.xml
 
 core\enums.lua
 core\constants.lua
-core\curves.lua
 core\colors.lua
+core\curves.lua
 core\assets2.lua
 core\widgets.lua
 core\backdrop.lua
 core\util.lua
 core\bind.lua
+
+# bind F12 to /reload
+modules\settings\bindings\reload.lua
+# set some cvars
+modules\settings\cvars2.lua
 
 modules\units\elements\core.lua
 modules\units\elements\colors.lua
@@ -41,22 +46,13 @@ modules\units\boss.lua
 # modules\units\resources.lua
 # modules\units\castbar.lua
 
-# bind F12 to /reload
-modules\settings\bindings\reload.lua
-# set some cvars
-modules\settings\cvars2.lua
-
 # standalone coordinates on worldmap
 modules\widgets\coordinates.lua
-# hero talent switcher
-modules\widgets\herotalents.lua
+# add faction and race info to character frame
+modules\widgets\character.lua
 # skyriding display
 modules\widgets\skyriding.lua
-# quick spec switcher
-modules\widgets\talents.lua
 
-# add movement speed back to the CharacterFrame
-modules\blizzard\character.lua
 # right-click to hide slots
 modules\blizzard\dressingroom.lua
 # hide bagbar etc
@@ -65,6 +61,5 @@ modules\blizzard\hide2.lua
 modules\blizzard\mail2.lua
 # toasts and popups
 modules\blizzard\popups2.lua
-# modules\blizzard\tooltips2.lua
 
 # modules\iuncta\settings.lua

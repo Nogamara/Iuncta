@@ -5,10 +5,6 @@ StaticPopupDialogs.PARTY_INVITE.hideOnEscape = nil
 StaticPopupDialogs.CONFIRM_SUMMON.hideOnEscape = nil
 StaticPopupDialogs.AREA_SPIRIT_HEAL.hideOnEscape = nil
 
--- don't ask for written confirmation when deleting items
-addon:SafeSetTrue(StaticPopupDialogs.DELETE_ITEM, 'enterClicksFirstButton')
-addon:SafeSetTrue(StaticPopupDialogs.DELETE_GOOD_ITEM, 'enterClicksFirstButton')
-
 -- click through toasts
 hooksecurefunc(EventToastManagerFrame, 'DisplayToast', function(self)
 	self:EnableMouse(false)
