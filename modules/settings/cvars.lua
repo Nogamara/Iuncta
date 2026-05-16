@@ -37,7 +37,8 @@ local CVARS = { -- exposed settings from the interface options
 	countdownForCooldowns = 1,
 
 	-- Gameplay Combat
-	nameplateShowSelf = 0, -- (default)
+	nameplateShowSelf = 0, -- (default, wrong name?)
+	nameplatesShowSelf = 0, -- (default)
 	doNotFlashLowHealthWarning = 1,
 	lossOfControl = 1, -- (default)
 	enableFloatingCombatText = 0, -- (default)
