@@ -17,7 +17,7 @@ end
 -- we'll instead use addon.colors.class or direct from APIs for fontstrings
 for _, color in next, oUF.colors.class do
 	local h, s, v = C_ColorUtil.ConvertRGBToHSV(color:GetRGB())
-	color:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.6))
+	-- color:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.6))
 end
 
 -- also darken reaction colors, using addon.colors.reaction instead for fontstrings

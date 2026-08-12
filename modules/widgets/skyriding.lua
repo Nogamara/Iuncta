@@ -17,8 +17,8 @@ parent:Hide()
 addon:PixelPerfect(parent)
 
 local cooldowns = addon:CreateFrame('Frame', nil, parent)
-cooldowns:SetPoint('BOTTOMLEFT', addon.units.resources)
-cooldowns:SetPoint('BOTTOMRIGHT', addon.units.resources)
+cooldowns:SetPoint('TOPLEFT', addon.units.player, 'BOTTOMLEFT', 0, -90)
+cooldowns:SetPoint('TOPRIGHT', addon.units.player, 'BOTTOMRIGHT', 0, -90)
 cooldowns:SetHeight(12) -- same as the resources
 cooldowns.Update = function()
 	local cooldownsChanged

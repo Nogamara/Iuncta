@@ -95,6 +95,23 @@ do
 		statusBar:SetBackgroundColor(0, 0, 0, 0.7) -- default is hard to see on light backgrounds
 		return statusBar
 	end
+
+	function widgetMixin:CreateBackdropStatusBarForPower(unit, template)
+		local statusBar = self:CreateStatusBar(template)
+		statusBar:AddBackdrop()
+
+		local classToken = UnitClassBase(unit)
+		if classToken then
+			local col = C_ClassColor.GetClassColor(classToken)
+			local h, s, v = C_ColorUtil.ConvertRGBToHSV(col:GetRGB())
+			col:SetRGB(C_ColorUtil.ConvertHSVToRGB(h, s, v * 0.4))
+			local r, g, b = col:GetRGB()
+			statusBar:SetBackgroundColor(r, g, b, 0.7)
+		else
+			statusBar:SetBackgroundColor(0, 0, 0, 0.7)
+		end
+		return statusBar
+	end
 end
 
 do

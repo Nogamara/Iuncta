@@ -26,6 +26,7 @@ local DEBUFF_FILTER_RAID = CreateFromMixins(DEBUFF_FILTER, {
 
 local function overrideDisplayPower(element, unit)
 	-- only show power for healers' mana or blood death knights' runic power
+	--[[
 	local role = UnitGroupRolesAssignedEnum(unit)
 	if role == Enum.LFGRole.Healer then
 		return Enum.PowerType.Mana
@@ -37,6 +38,10 @@ local function overrideDisplayPower(element, unit)
 	end
 
 	element.__owner.Health.TempLoss:SetPoint('BOTTOM')
+	]]--
+	local self = element:GetParent()
+	self:EnableElement('Power')
+	self.Health:SetHeight(self:GetHeight() - element:GetHeight() - 1)
 end
 
 local function postUpdatePower(element)
@@ -53,6 +58,9 @@ end
 
 local function style(self, unit, isRaidStyle)
 	Mixin(self, addon.widgetMixin)
+	local ufw = 284
+	local ufh = 30
+	local barTex = "Interface\\AddOns\\Iuncta\\assets\\bars\\Minimalist.tga"
 
 	self:SetScript('OnEnter', addon.unitShared.ShowTooltip)
 	self:SetScript('OnLeave', addon.unitShared.HideTooltip)
@@ -71,8 +79,9 @@ local function style(self, unit, isRaidStyle)
 
 	local Health = self:CreateStatusBar()
 	Health:SetPoint('TOPLEFT')
-	Health:SetPoint('TOPRIGHT', HealthTempLoss:GetStatusBarTexture(), 'TOPLEFT')
-	Health:SetPoint('BOTTOMRIGHT', HealthTempLoss:GetStatusBarTexture(), 'BOTTOMLEFT')
+	Health:SetPoint('TOPRIGHT')
+	Health:SetHeight(ufh)
+	Health:SetStatusBarTexture(barTex)
 	Health.colorClass = true
 	Health.colorDisconnected = true
 	Health.colorReaction = true -- for vehicles
@@ -112,15 +121,17 @@ local function style(self, unit, isRaidStyle)
 	OverHealAbsorbIndicator:SetWidth(10)
 	Health.OverHealAbsorbIndicator = OverHealAbsorbIndicator
 
-	local Power = self:CreateBackdropStatusBar()
-	Power:SetPoint('BOTTOMLEFT')
-	Power:SetPoint('BOTTOMRIGHT')
-	Power:SetHeight(5)
+	-- local Power = self:CreateBackdropStatusBar()
+	local Power = self:CreateBackdropStatusBarForPower(unit)
+	Power:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -ufh)
+	Power:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 0, -ufh)
+	Power:SetHeight(ufh)
 	Power:SetFrameLevel(Health:GetFrameLevel() + 2) -- above Health's sub-widgets
+	Power:SetStatusBarTexture(barTex)
 	Power.colorPower = true
-	Power.displayAltPower = true -- needed for display override to work
-	Power.displayAltPowerOnly = true
-	Power.GetDisplayPower = overrideDisplayPower
+	-- Power.GetDisplayPower = overrideDisplayPower
+	-- Power.displayAltPower = true -- needed for display override to work
+	-- Power.displayAltPowerOnly = true
 	Power.PostUpdate = postUpdatePower
 	self.Power = Power
 
@@ -140,8 +151,20 @@ local function style(self, unit, isRaidStyle)
 	Name:SetPoint('LEFT')
 	Name:SetJustifyH('LEFT')
 	self.Name = Name
-	self:Tag(Name, '[inomena:leader][inomena:reactioncolor][inomena:name<$|r]')
+	self:Tag(Name, '[$>inomena:leader<$ ][inomena:reactioncolor][inomena:name<$|r]')
 
+	local Role = Health:CreateText(14)
+	Role:SetPoint('LEFT', Health, 'LEFT', -12, 12)
+	Role:SetJustifyH('RIGHT')
+	Role:SetIgnoreParentAlpha(true)
+	self.Role = Role
+	self:Tag(Role, '[inomena:role]')
+
+	local PowerVal = Power:CreateText()
+	PowerVal:SetPoint('BOTTOMRIGHT', Power, 'RIGHT', 0, -8)
+	PowerVal:SetJustifyH('LEFT')
+	self:Tag(PowerVal, '[$>inomena:power<$ / ][inomena:powermax]')
+	
 	local Status = Health:CreateText()
 	Status:SetPoint('CENTER', Health, 'TOP', 0, -addon.SPACING)
 	Status:SetJustifyH('CENTER')
@@ -210,6 +233,16 @@ local function style(self, unit, isRaidStyle)
 	Debuffs.tooltipOffsetY = 3
 	Debuffs.PostCreateButton = addon.unitShared.PostCreateAura
 
+	-- local Buffs = self:CreateFrame()
+	-- Buffs:SetPoint('BOTTOMLEFT', 4, 7)
+	-- Buffs:SetSize(self:GetWidth() - 3, 18)
+	-- Buffs:SetFrameLevel(Name:GetParent():GetFrameLevel() + 1) -- render high
+	-- Buffs.growthX = 'RIGHT'
+	-- Buffs.growthY = 'DOWN'
+	-- Buffs.size = 16
+	-- Buffs.spacing = addon.SPACING
+	-- Buffs.initialAnchor = 'BOTTOMLEFT'
+
 	if isRaidStyle then
 		Debuffs:SetPoint('BOTTOMRIGHT', -3, 3)
 		Debuffs:AddGroup('HARMFUL|CROWD_CONTROL', {
@@ -260,10 +293,10 @@ oUF:RegisterStyle(partyStyle, function(self, unit)
 	style(self, unit, false)
 end)
 
-local raidStyle = addon.unitPrefix .. 'Raid'
-oUF:RegisterStyle(raidStyle, function(self, unit)
-	style(self, unit, true)
-end)
+-- local raidStyle = addon.unitPrefix .. 'Raid'
+-- oUF:RegisterStyle(raidStyle, function(self, unit)
+-- 	style(self, unit, true)
+-- end)
 
 oUF:Factory(function(self)
 	local sharedAttributes = {
@@ -314,28 +347,28 @@ oUF:Factory(function(self)
 		showPlayer = true,
 		maxColumns = 1,
 		['oUF-initialConfigFunction'] = [[
-			self:SetWidth(144)
-			self:SetHeight(52)
+			self:SetWidth(284)
+			self:SetHeight(60)
 		]]
-	}), 'RIGHT', UIParent, 'CENTER', -360, 0)
+	}), 'RIGHT', UIParent, 'CENTER', -650, 0)
 
-	-- healer-specific raid
-	SpawnHeader(raidStyle, 'HEALER', addon:T({
-		showRaid = true,
-		maxColumns = 8,
-		['oUF-initialConfigFunction'] = [[
-			self:SetWidth(92)
-			self:SetHeight(48)
-		]]
-	}), 'RIGHT', UIParent, 'CENTER', -300, 0)
+	-- -- healer-specific raid
+	-- SpawnHeader(raidStyle, 'HEALER', addon:T({
+	-- 	showRaid = true,
+	-- 	maxColumns = 8,
+	-- 	['oUF-initialConfigFunction'] = [[
+	-- 		self:SetWidth(92)
+	-- 		self:SetHeight(48)
+	-- 	]]
+	-- }), 'RIGHT', UIParent, 'CENTER', -300, 0)
 
-	-- dmg & tank use the same raid layout
-	SpawnHeader(raidStyle, '!HEALER', addon:T({
-		showRaid = true,
-		maxColumns = 8,
-		['oUF-initialConfigFunction'] = [[
-			self:SetWidth(80)
-			self:SetHeight(40)
-		]]
-	}), 'RIGHT', UIParent, 'CENTER', -500, -90)
+	-- -- dmg & tank use the same raid layout
+	-- SpawnHeader(raidStyle, '!HEALER', addon:T({
+	-- 	showRaid = true,
+	-- 	maxColumns = 8,
+	-- 	['oUF-initialConfigFunction'] = [[
+	-- 		self:SetWidth(80)
+	-- 		self:SetHeight(40)
+	-- 	]]
+	-- }), 'RIGHT', UIParent, 'CENTER', -500, -90)
 end)

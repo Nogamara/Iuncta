@@ -6,18 +6,19 @@ oUF:RegisterStyle(styleName, function(self)
 	Mixin(self, addon.widgetMixin)
 
 	self:RegisterForClicks('AnyUp')
-	self:SetSize(120, 20)
+	self:SetSize(284, 30)
 
 	local Health = self:CreateBackdropStatusBar()
 	Health:SetPoint('TOP')
-	Health:SetSize(self:GetWidth(), 10)
+	Health:SetSize(284, 30)
 	Health.colorSmooth = true
+	Health.colorReaction = true
 	self.Health = Health
 
-	if addon.units.player.Power then
-		-- offset when the player has mana (i.e. for warlocks)
-		Health:SetPointsOffset(0, -10)
-	end
+	-- if addon.units.player.Power then
+	--	-- offset when the player has mana (i.e. for warlocks)
+	--	Health:SetPointsOffset(0, -30)
+	-- end
 
 	local Auras = self:CreateAuras({
 		layoutLimit = math.huge,
@@ -46,14 +47,14 @@ oUF:RegisterStyle(styleName, function(self)
 	})
 
 	local Status = self:CreateText()
-	Status:SetPoint('CENTER', Health)
-	self:Tag(Status, '[inomena:dead]')
+	Status:SetPoint('RIGHT', -addon.SPACING, 0)
+	self:Tag(Status, '[inomena:dead][inomena:name<$|r]')
 end)
 
 oUF:SetActiveStyle(styleName)
 
 local pet = oUF:Spawn('pet')
-pet:SetPoint('TOPLEFT', addon.units.player, 'BOTTOMLEFT', 0, -5)
+pet:SetPoint('TOPLEFT', addon.units.player, 'BOTTOMLEFT', 0, -35)
 addon:PixelPerfect(pet)
 
 -- expose internally
